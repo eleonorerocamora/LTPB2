@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LTPB - Pacotille</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Corbel', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #4a4a4a;
+      overflow-x: hidden;
+      background-color: #e0f2fe;
+    }
+
+    nav {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: #4a4a4a;
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.3s;
+      padding: 0.5rem 1rem;
+    }
+
+    nav a:hover {
+      color: #6b7280;
+    }
+
+    .page-header {
+      margin-top: 80px;
+      padding: 3rem 2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #6b7280;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #4a4a4a;
+    }
+
+    .products-section {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .product-image-placeholder {
+      width: 100%;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 3rem;
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-description {
+      color: #6b7280;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      min-height: 60px;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: #4a4a4a;
+    }
+
+    .add-product-section {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 8px;
+    }
+
+    .add-product-form {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 0.5rem;
+      color: #4a4a4a;
+      font-weight: 400;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 0.8rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 4px;
+      font-family: 'Corbel', sans-serif;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: #4a4a4a;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: #4a4a4a;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Corbel', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary {
+      background: rgba(74, 74, 74, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html#a-propos">À Propos</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1 id="category-title">Pacotille</h1>
+    <a href="index.html" class="back-link">← Retour à l'accueil</a>
+  </div>
+
+  <div class="products-section">
+    <div id="products-container" class="products-grid">
+    </div>
+  </div>
+
+  <div class="add-product-section">
+    <h2 style="margin-bottom: 1.5rem; font-weight: 300; color: #4a4a4a;">Ajouter un produit</h2>
+    <form class="add-product-form" id="add-product-form">
+      <div class="form-group">
+        <label>Photo</label>
+        <input type="file" id="product-image" accept="image/*" required>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="product-description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Prix (€)</label>
+        <input type="number" id="product-price" step="0.01" min="0" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Ajouter le produit</button>
+    </form>
+  </div>
+
+      <script>
+    const categoryName = 'pacotille';
+    const titleElement = document.getElementById('category-title');
+    if (titleElement) {
+      titleElement.textContent = 'Pacotille';
+    }
+    document.title = 'LTPB - Pacotille';
+
+    const defaultImagePaths = [
+  'image catégories/pacotille/PHOTO-2026-03-22-08-51-25.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-52-21.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-52-47.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-54-21.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-55-00.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-55-36 2.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-55-36 3.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-55-36.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-56-05.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-22-08-56-29.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-25-23-59-56.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-00-00-26.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-00-06-29.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-00-08-03.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-08-11-11.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-14-57-07.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-11-22.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-12-21.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-13-10.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-14-18.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-15-23.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-31-37.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-33-26.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-40-34.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-41-16.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-42-05.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-43-17.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-45-15.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-46-36.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-48-08.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-49-16.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-21-59-38.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-22-00-15.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-22-00-53.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-22-19-16.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-22-25-15.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-22-33-24.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-23-17-26.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-26-23-17-46.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-45-01.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-49-00.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-50-25.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-51-33.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-53-02.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-54-42.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-55-36.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-57-03.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-12-59-31.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-13-01-25.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-13-02-15.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-30-49.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-32-13.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-33-14.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-34-15.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-35-31.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-37-11.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-37-55.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-39-01.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-39-55.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-40-51.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-41-56.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-42-31.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-43-34.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-44-37.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-45-17.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-46-28.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-47-27.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-51-43.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-52-53.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-54-06.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-55-08.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-55-57.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-58-23.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-16-59-51.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-00-35.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-01-49.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-03-00.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-05-30.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-07-08.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-13-28.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-13-57.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-15-55.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-17-06.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-18-58.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-19-47.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-20-42.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-22-08.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-22-58.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-24-46.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-28-31.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-29-28.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-17-31-12.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-33-30.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-34-27.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-35-34.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-36-12.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-41-51.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-42-10.jpg',
+  'image catégories/pacotille/PHOTO-2026-03-28-20-53-04.jpg',
+  'image catégories/pacotille/WhatsApp Image 2026-03-22 at 09.03.12.jpeg'
+];
+
+    const defaultPricesKey = categoryName + '-default-prices';
+    let defaultPrices = JSON.parse(localStorage.getItem(defaultPricesKey)) || {};
+    let savedProducts = JSON.parse(localStorage.getItem(categoryName + '-products')) || [];
+
+    function saveDefaultPrices() {
+      localStorage.setItem(defaultPricesKey, JSON.stringify(defaultPrices));
+    }
+
+    function getDisplayProducts() {
+      const defaultProducts = defaultImagePaths.map((imageUrl, index) => ({
+        id: `default-${index}`,
+        isDefault: true,
+        imageKey: imageUrl,
+        description: '',
+        price: defaultPrices[imageUrl] || '',
+        imageUrl
+      }));
+
+      return [...defaultProducts, ...savedProducts];
+    }
+
+    function toImageSrc(value) {
+      return value && value.startsWith('data:') ? value : encodeURI(value || '');
+    }
+
+    function displayProducts() {
+      const products = getDisplayProducts();
+      const container = document.getElementById('products-container');
+      container.innerHTML = '';
+
+      if (products.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 2rem;">Aucun produit dans cette catégorie.</p>';
+        return;
+      }
+
+      products.forEach((product) => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+
+        const imageHtml = product.imageUrl
+          ? `<img src="${toImageSrc(product.imageUrl)}" alt="${product.description || categoryName}" class="product-image">`
+          : `<div class="product-image-placeholder">📷</div>`;
+
+        const descriptionHtml = product.description
+          ? `<div class="product-description">${product.description}</div>`
+          : '';
+
+        const priceHtml = product.price
+          ? `<div class="product-price">${product.price} €</div>`
+          : '';
+
+        const defaultEditorHtml = product.isDefault
+          ? `<div style="margin-top: 0.8rem;"><label style="display:block; color:#6b7280; font-size:0.85rem; margin-bottom:0.3rem;">Prix (€)</label><input type="number" step="0.01" min="0" class="default-price-input" data-image-key="${encodeURIComponent(product.imageKey)}" value="${product.price}" style="width:100%; padding:0.55rem; border:1px solid rgba(0,0,0,0.1); border-radius:4px; font-family:inherit;"></div>`
+          : '';
+
+        productCard.innerHTML = `
+          ${imageHtml}
+          <div class="product-info">
+            ${descriptionHtml}
+            ${priceHtml}
+            ${defaultEditorHtml}
+          </div>
+        `;
+
+        container.appendChild(productCard);
+      });
+
+      document.querySelectorAll('.default-price-input').forEach((input) => {
+        input.addEventListener('change', function() {
+          const key = decodeURIComponent(this.getAttribute('data-image-key'));
+          const value = this.value.trim();
+
+          if (!value) {
+            delete defaultPrices[key];
+          } else {
+            defaultPrices[key] = Number(value).toFixed(2);
+          }
+
+          saveDefaultPrices();
+          displayProducts();
+        });
+      });
+    }
+
+    document.getElementById('add-product-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const description = document.getElementById('product-description').value;
+      const price = parseFloat(document.getElementById('product-price').value);
+      const imageFile = document.getElementById('product-image').files[0];
+
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const newProduct = {
+            id: Date.now(),
+            description: description,
+            price: price.toFixed(2),
+            imageUrl: e.target.result
+          };
+
+          savedProducts.push(newProduct);
+          localStorage.setItem(categoryName + '-products', JSON.stringify(savedProducts));
+
+          displayProducts();
+          document.getElementById('add-product-form').reset();
+        };
+        reader.readAsDataURL(imageFile);
+      }
+    });
+
+    displayProducts();
+  </script>
+</body>
+</html>
