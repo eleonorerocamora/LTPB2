@@ -360,7 +360,9 @@
 ];
 
     const defaultPricesKey = categoryName + '-default-prices';
-    let defaultPrices = JSON.parse(localStorage.getItem(defaultPricesKey)) || {};
+    const HARDCODED_DEFAULT_PRICES = {};
+
+    let defaultPrices = Object.assign({}, HARDCODED_DEFAULT_PRICES, JSON.parse(localStorage.getItem(defaultPricesKey) || '{}'));
     let savedProducts = JSON.parse(localStorage.getItem(categoryName + '-products')) || [];
 
     function saveDefaultPrices() {

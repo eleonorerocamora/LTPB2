@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exporter les prix (localStorage → code)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    h1 { font-size: 1.25rem; }
+    .note { background: #f3f4f6; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+    pre { background: #1f2937; color: #e5e7eb; padding: 1rem; overflow: auto; border-radius: 8px; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; }
+    button { padding: 0.6rem 1rem; font-size: 1rem; cursor: pointer; border-radius: 6px; border: 1px solid #374151; background: #fff; }
+    button:hover { background: #f9fafb; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    textarea { width: 100%; min-height: 120px; font-family: monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Exporter les prix vers le code (HARDCODED_DEFAULT_PRICES)</h1>
+  <div class="note">
+    <p><strong>Important :</strong> les prix que tu as saisis sur les pages ne sont <em>pas</em> dans les fichiers .html sur le disque — ils sont dans le <strong>navigateur</strong> (localStorage).</p>
+    <p>Pour les récupérer :</p>
+    <ol>
+      <li>Lance un petit serveur local dans le dossier du site :<br>
+        <code>cd "/Users/ele/Documents/site LTPB html" && python3 -m http.server 8765</code></li>
+      <li>Ouvre <code>http://localhost:8765/</code>, va sur chaque catégorie où tu as déjà mis les prix (même origine = même localStorage).</li>
+      <li>Reviens sur cette page <code>http://localhost:8765/export-prix.html</code> et clique sur « Générer le code ».</li>
+      <li>Copie chaque bloc ci-dessous et remplace <code>const HARDCODED_DEFAULT_PRICES = {};</code> dans le fichier .html correspondant.</li>
+    </ol>
+  </div>
+
+  <p>
+    <button type="button" id="btn-generate">Générer le code depuis ce navigateur</button>
+  </p>
+
+  <div id="output"></div>
+
+  <label for="manual-json">Ou colle ici le JSON d’une clé (ex. depuis Chrome → F12 → Application → Stockage local → valeur de <code>campagne-default-prices</code>) :</label>
+  <textarea id="manual-json" placeholder='{"image catégories/campagne/PHOTO-....jpg": "12.50"}'></textarea>
+  <p><button type="button" id="btn-manual">Convertir ce JSON en bloc HARDCODED</button></p>
+  <pre id="manual-out" style="display:none;"></pre>
+
+  <script>
+    const CATEGORY_KEYS = [
+      'pacotille-default-prices',
+      'verroterie-default-prices',
+      'campagne-default-prices',
+      'ultra-vintage-default-prices',
+      'the-ou-cafe-default-prices',
+      'lampes-default-prices',
+      'cabinet-de-curiosite-default-prices',
+      'tableaux-default-prices'
+    ];
+
+    const FILE_BY_KEY = {
+      'pacotille-default-prices': 'test_pacotille.html',
+      'verroterie-default-prices': 'verroterie.html',
+      'campagne-default-prices': 'campagne.html',
+      'ultra-vintage-default-prices': 'ultra-vintage.html',
+      'the-ou-cafe-default-prices': 'the-ou-cafe.html',
+      'lampes-default-prices': 'lampes.html',
+      'cabinet-de-curiosite-default-prices': 'cabinet-de-curiosite.html',
+      'tableaux-default-prices': 'tableaux.html'
+    };
+
+    function jsEscape(s) {
+      return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    }
+
+    function objectToHardcodedLiteral(obj) {
+      const lines = Object.keys(obj).sort().map(function (k) {
+        const v = obj[k];
+        if (v === '' || v == null) return null;
+        const val = typeof v === 'number' ? Number(v).toFixed(2) : String(v);
+        return "      '" + jsEscape(k) + "': '" + jsEscape(val) + "'";
+      }).filter(Boolean);
+      if (lines.length === 0) return 'const HARDCODED_DEFAULT_PRICES = {};';
+      return 'const HARDCODED_DEFAULT_PRICES = {\n' + lines.join(',\n') + '\n    };';
+    }
+
+    document.getElementById('btn-generate').addEventListener('click', function () {
+      const out = document.getElementById('output');
+      out.innerHTML = '';
+      let found = false;
+      CATEGORY_KEYS.forEach(function (storageKey) {
+        const raw = localStorage.getItem(storageKey);
+        if (!raw || raw === '{}') return;
+        let obj;
+        try {
+          obj = JSON.parse(raw);
+        } catch (e) {
+          return;
+        }
+        if (!obj || typeof obj !== 'object' || Object.keys(obj).length === 0) return;
+        found = true;
+        const file = FILE_BY_KEY[storageKey] || storageKey;
+        const h3 = document.createElement('h2');
+        h3.textContent = file + ' (clé ' + storageKey + ')';
+        document.getElementById('output').appendChild(h3);
+        const pre = document.createElement('pre');
+        pre.textContent = objectToHardcodedLiteral(obj);
+        out.appendChild(pre);
+      });
+      if (!found) {
+        out.innerHTML = '<p class="note">Aucune donnée de prix trouvée dans le localStorage de <strong>cette origine</strong>. Ouvre les pages catégories via le même serveur (localhost:8765) puis réessaie, ou utilise le collage JSON ci-dessous.</p>';
+      }
+    });
+
+    document.getElementById('btn-manual').addEventListener('click', function () {
+      const text = document.getElementById('manual-json').value.trim();
+      const pre = document.getElementById('manual-out');
+      if (!text) {
+        pre.style.display = 'block';
+        pre.textContent = 'Colle d’abord le JSON.';
+        return;
+      }
+      try {
+        const obj = JSON.parse(text);
+        pre.style.display = 'block';
+        pre.textContent = objectToHardcodedLiteral(obj);
+      } catch (e) {
+        pre.style.display = 'block';
+        pre.textContent = 'JSON invalide : ' + e.message;
+      }
+    });
+  </script>
+</body>
+</html>
