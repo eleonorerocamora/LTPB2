@@ -263,7 +263,11 @@
     ];
 
     const defaultPricesKey = categoryName + '-default-prices';
-    const HARDCODED_DEFAULT_PRICES = {};
+    const HARDCODED_DEFAULT_PRICES = {
+      'image catégories/Lampes/PHOTO-2026-03-28-22-45-21 2.jpg': '30.00',
+      'image catégories/Lampes/PHOTO-2026-03-28-22-45-21 3.jpg': '30.00',
+      'image catégories/Lampes/PHOTO-2026-03-28-22-45-21.jpg': '30.00'
+    };
 
     let defaultPrices = Object.assign({}, HARDCODED_DEFAULT_PRICES, JSON.parse(localStorage.getItem(defaultPricesKey) || '{}'));
     let savedProducts = JSON.parse(localStorage.getItem(categoryName + '-products')) || [];

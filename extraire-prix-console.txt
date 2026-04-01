@@ -1,0 +1,37 @@
+================================================================================
+ÉTAPE 1 — Sur ton Mac, ouvre le site où tu as DÉJÀ saisi les prix
+         (même adresse qu’avant : fichier local ou http://localhost:...)
+
+ÉTAPE 2 — Chrome ou Safari : F12 ou Cmd+Option+I → onglet « Console »
+
+ÉTAPE 3 — Colle ce script, Entrée. Les prix sont copiés dans le presse-papiers.
+
+--------------------------------------------------------------------------------
+
+(async () => {
+  const keys = Object.keys(localStorage).filter(k => k.endsWith('-default-prices'));
+  const o = {};
+  keys.forEach(k => {
+    try { o[k] = JSON.parse(localStorage.getItem(k) || '{}'); } catch (e) { o[k] = {}; }
+  });
+  const text = JSON.stringify(o, null, 2);
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('OK — JSON copié dans le presse-papiers. Colle-le dans prix-export.json');
+  } catch (e) {
+    console.log(text);
+    console.log('Copie le JSON affiché ci-dessus à la main.');
+  }
+  return o;
+})();
+
+================================================================================
+ÉTAPE 4 — Crée / ouvre le fichier  prix-export.json  à la racine du site
+         et colle tout le JSON (remplace le contenu s’il y en a).
+
+ÉTAPE 5 — Dans le Terminal :
+
+         cd "/Users/ele/Documents/site LTPB html"
+         python3 inject_prix.py
+
+================================================================================

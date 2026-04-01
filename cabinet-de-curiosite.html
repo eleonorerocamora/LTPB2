@@ -262,7 +262,10 @@
     ];
 
     const defaultPricesKey = categoryName + '-default-prices';
-    const HARDCODED_DEFAULT_PRICES = {};
+    const HARDCODED_DEFAULT_PRICES = {
+      'image catégories/cabinet curiosie/PHOTO-2026-03-25-23-26-42.jpg': '20.00',
+      'image catégories/cabinet curiosie/PHOTO-2026-03-26-22-03-08.jpg': '30.00'
+    };
 
     let defaultPrices = Object.assign({}, HARDCODED_DEFAULT_PRICES, JSON.parse(localStorage.getItem(defaultPricesKey) || '{}'));
     let savedProducts = JSON.parse(localStorage.getItem(categoryName + '-products')) || [];
