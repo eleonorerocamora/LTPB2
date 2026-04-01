@@ -137,72 +137,6 @@
       color: #4a4a4a;
     }
 
-    .add-product-section {
-      max-width: 1200px;
-      margin: 3rem auto;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 8px;
-    }
-
-    .add-product-form {
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      margin-bottom: 0.5rem;
-      color: #4a4a4a;
-      font-weight: 400;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      padding: 0.8rem;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 4px;
-      font-family: 'Corbel', sans-serif;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.9);
-      color: #4a4a4a;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .form-group input[type="file"] {
-      padding: 0.5rem;
-    }
-
-    .btn {
-      padding: 0.8rem 2rem;
-      background: rgba(255, 255, 255, 0.9);
-      color: #4a4a4a;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: 'Corbel', sans-serif;
-      font-size: 1rem;
-      transition: all 0.3s;
-    }
-
-    .btn:hover {
-      background: rgba(255, 255, 255, 1);
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .btn-primary {
-      background: rgba(74, 74, 74, 0.1);
-    }
-
     @media (max-width: 768px) {
       .products-grid {
         grid-template-columns: 1fr;
@@ -227,25 +161,6 @@
   <div class="products-section">
     <div id="products-container" class="products-grid">
     </div>
-  </div>
-
-  <div class="add-product-section">
-    <h2 style="margin-bottom: 1.5rem; font-weight: 300; color: #4a4a4a;">Ajouter un produit</h2>
-    <form class="add-product-form" id="add-product-form">
-      <div class="form-group">
-        <label>Photo</label>
-        <input type="file" id="product-image" accept="image/*" required>
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="product-description" required></textarea>
-      </div>
-      <div class="form-group">
-        <label>Prix (€)</label>
-        <input type="number" id="product-price" step="0.01" min="0" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Ajouter le produit</button>
-    </form>
   </div>
 
       <script>
@@ -311,80 +226,71 @@
       'image catégories/campagne/PHOTO-2026-03-28-22-31-02.jpg'
     ];
 
-    const defaultPricesKey = categoryName + '-default-prices';
     const HARDCODED_DEFAULT_PRICES = {
-      'image catégories/campagne/PHOTO-2026-03-22-09-21-54.jpg': '7.00',
-      'image catégories/campagne/PHOTO-2026-03-22-09-24-24.jpg': '12.00',
-      'image catégories/campagne/PHOTO-2026-03-22-09-48-39.jpg': '22.00',
-      'image catégories/campagne/PHOTO-2026-03-22-09-51-40.jpg': '13.00',
-      'image catégories/campagne/PHOTO-2026-03-22-22-38-14.jpg': '5.00',
-      'image catégories/campagne/PHOTO-2026-03-22-22-41-11.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-22-22-43-33.jpg': '15.00',
-      'image catégories/campagne/PHOTO-2026-03-22-23-01-59.jpg': '15.00',
-      'image catégories/campagne/PHOTO-2026-03-22-23-03-30.jpg': '4.00',
-      'image catégories/campagne/PHOTO-2026-03-23-13-23-27.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-23-22-18-51.jpg': '12.00',
-      'image catégories/campagne/PHOTO-2026-03-23-22-20-35.jpg': '12.00',
-      'image catégories/campagne/PHOTO-2026-03-23-22-22-53.jpg': '14.00',
-      'image catégories/campagne/PHOTO-2026-03-23-22-31-58.jpg': '5.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-54-37.jpg': '8.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-55-01.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-55-40.jpg': '7.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-56-34.jpg': '5.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-57-07.jpg': '15.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-58-24.jpg': '8.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-58-41.jpg': '4.00',
-      'image catégories/campagne/PHOTO-2026-03-23-23-58-59.jpg': '15.00',
-      'image catégories/campagne/PHOTO-2026-03-24-00-03-09.jpg': '8.00',
-      'image catégories/campagne/PHOTO-2026-03-24-00-03-40.jpg': '13.00',
-      'image catégories/campagne/PHOTO-2026-03-24-00-04-13.jpg': '14.00',
-      'image catégories/campagne/PHOTO-2026-03-24-00-05-47.jpg': '4.00',
-      'image catégories/campagne/PHOTO-2026-03-24-00-11-13.jpg': '7.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-39-24.jpg': '7.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-44-35.jpg': '20.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-45-57.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-47-18.jpg': '5.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-50-21.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-51-13.jpg': '5.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-52-10.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-53-51.jpg': '7.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-57-41.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-58-50.jpg': '8.00',
-      'image catégories/campagne/PHOTO-2026-03-24-20-59-24.jpg': '7.00',
-      'image catégories/campagne/PHOTO-2026-03-25-23-23-43.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-25-23-27-50.jpg': '14.00',
-      'image catégories/campagne/PHOTO-2026-03-26-00-01-15.jpg': '14.00',
-      'image catégories/campagne/PHOTO-2026-03-26-23-18-31.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-28-19-32-57.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-28-19-33-24.jpg': '8.00',
-      'image catégories/campagne/PHOTO-2026-03-28-19-43-31.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-28-19-46-03.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-28-19-55-02.jpg': '10.00',
-      'image catégories/campagne/PHOTO-2026-03-28-19-56-01.jpg': '12.00',
-      'image catégories/campagne/PHOTO-2026-03-28-20-48-27.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-28-20-52-27.jpg': '6.00',
-      'image catégories/campagne/PHOTO-2026-03-28-21-53-17.jpg': '12.00',
-      'image catégories/campagne/PHOTO-2026-03-28-22-31-02.jpg': '12.00'
-    };
+  'image catégories/campagne/PHOTO-2026-03-22-09-21-54.jpg': '7.00',
+  'image catégories/campagne/PHOTO-2026-03-22-09-24-24.jpg': '12.00',
+  'image catégories/campagne/PHOTO-2026-03-22-09-48-39.jpg': '22.00',
+  'image catégories/campagne/PHOTO-2026-03-22-09-51-40.jpg': '13.00',
+  'image catégories/campagne/PHOTO-2026-03-22-22-38-14.jpg': '5.00',
+  'image catégories/campagne/PHOTO-2026-03-22-22-41-11.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-22-22-43-33.jpg': '15.00',
+  'image catégories/campagne/PHOTO-2026-03-22-23-01-59.jpg': '15.00',
+  'image catégories/campagne/PHOTO-2026-03-22-23-03-30.jpg': '4.00',
+  'image catégories/campagne/PHOTO-2026-03-23-13-23-27.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-23-22-18-51.jpg': '12.00',
+  'image catégories/campagne/PHOTO-2026-03-23-22-20-35.jpg': '12.00',
+  'image catégories/campagne/PHOTO-2026-03-23-22-22-53.jpg': '14.00',
+  'image catégories/campagne/PHOTO-2026-03-23-22-31-58.jpg': '5.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-54-37.jpg': '8.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-55-01.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-55-40.jpg': '7.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-56-34.jpg': '5.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-57-07.jpg': '15.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-58-24.jpg': '8.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-58-41.jpg': '4.00',
+  'image catégories/campagne/PHOTO-2026-03-23-23-58-59.jpg': '15.00',
+  'image catégories/campagne/PHOTO-2026-03-24-00-03-09.jpg': '8.00',
+  'image catégories/campagne/PHOTO-2026-03-24-00-03-40.jpg': '13.00',
+  'image catégories/campagne/PHOTO-2026-03-24-00-04-13.jpg': '14.00',
+  'image catégories/campagne/PHOTO-2026-03-24-00-05-47.jpg': '4.00',
+  'image catégories/campagne/PHOTO-2026-03-24-00-11-13.jpg': '7.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-39-24.jpg': '7.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-44-35.jpg': '20.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-45-57.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-47-18.jpg': '5.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-50-21.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-51-13.jpg': '5.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-52-10.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-53-51.jpg': '7.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-57-41.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-58-50.jpg': '8.00',
+  'image catégories/campagne/PHOTO-2026-03-24-20-59-24.jpg': '7.00',
+  'image catégories/campagne/PHOTO-2026-03-25-23-23-43.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-25-23-27-50.jpg': '14.00',
+  'image catégories/campagne/PHOTO-2026-03-26-00-01-15.jpg': '14.00',
+  'image catégories/campagne/PHOTO-2026-03-26-23-18-31.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-28-19-32-57.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-28-19-33-24.jpg': '8.00',
+  'image catégories/campagne/PHOTO-2026-03-28-19-43-31.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-28-19-46-03.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-28-19-55-02.jpg': '10.00',
+  'image catégories/campagne/PHOTO-2026-03-28-19-56-01.jpg': '12.00',
+  'image catégories/campagne/PHOTO-2026-03-28-20-48-27.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-28-20-52-27.jpg': '6.00',
+  'image catégories/campagne/PHOTO-2026-03-28-21-53-17.jpg': '12.00',
+  'image catégories/campagne/PHOTO-2026-03-28-22-31-02.jpg': '12.00'
+};
 
-    let defaultPrices = Object.assign({}, HARDCODED_DEFAULT_PRICES, JSON.parse(localStorage.getItem(defaultPricesKey) || '{}'));
-    let savedProducts = JSON.parse(localStorage.getItem(categoryName + '-products')) || [];
-
-    function saveDefaultPrices() {
-      localStorage.setItem(defaultPricesKey, JSON.stringify(defaultPrices));
-    }
+    const defaultPrices = HARDCODED_DEFAULT_PRICES;
 
     function getDisplayProducts() {
-      const defaultProducts = defaultImagePaths.map((imageUrl, index) => ({
+      return defaultImagePaths.map((imageUrl, index) => ({
         id: `default-${index}`,
-        isDefault: true,
         imageKey: imageUrl,
         description: '',
         price: defaultPrices[imageUrl] || '',
         imageUrl
       }));
-
-      return [...defaultProducts, ...savedProducts];
     }
 
     function toImageSrc(value) {
@@ -417,65 +323,17 @@
           ? `<div class="product-price">${product.price} €</div>`
           : '';
 
-        const defaultEditorHtml = product.isDefault
-          ? `<div style="margin-top: 0.8rem;"><label style="display:block; color:#6b7280; font-size:0.85rem; margin-bottom:0.3rem;">Prix (€)</label><input type="number" step="0.01" min="0" class="default-price-input" data-image-key="${encodeURIComponent(product.imageKey)}" value="${product.price}" style="width:100%; padding:0.55rem; border:1px solid rgba(0,0,0,0.1); border-radius:4px; font-family:inherit;"></div>`
-          : '';
-
         productCard.innerHTML = `
           ${imageHtml}
           <div class="product-info">
             ${descriptionHtml}
             ${priceHtml}
-            ${defaultEditorHtml}
           </div>
         `;
 
         container.appendChild(productCard);
       });
-
-      document.querySelectorAll('.default-price-input').forEach((input) => {
-        input.addEventListener('change', function() {
-          const key = decodeURIComponent(this.getAttribute('data-image-key'));
-          const value = this.value.trim();
-
-          if (!value) {
-            delete defaultPrices[key];
-          } else {
-            defaultPrices[key] = Number(value).toFixed(2);
-          }
-
-          saveDefaultPrices();
-          displayProducts();
-        });
-      });
     }
-
-    document.getElementById('add-product-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const description = document.getElementById('product-description').value;
-      const price = parseFloat(document.getElementById('product-price').value);
-      const imageFile = document.getElementById('product-image').files[0];
-
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const newProduct = {
-            id: Date.now(),
-            description: description,
-            price: price.toFixed(2),
-            imageUrl: e.target.result
-          };
-
-          savedProducts.push(newProduct);
-          localStorage.setItem(categoryName + '-products', JSON.stringify(savedProducts));
-
-          displayProducts();
-          document.getElementById('add-product-form').reset();
-        };
-        reader.readAsDataURL(imageFile);
-      }
-    });
 
     displayProducts();
   </script>

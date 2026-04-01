@@ -137,72 +137,6 @@
       color: #4a4a4a;
     }
 
-    .add-product-section {
-      max-width: 1200px;
-      margin: 3rem auto;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 8px;
-    }
-
-    .add-product-form {
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      margin-bottom: 0.5rem;
-      color: #4a4a4a;
-      font-weight: 400;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      padding: 0.8rem;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 4px;
-      font-family: 'Corbel', sans-serif;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.9);
-      color: #4a4a4a;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .form-group input[type="file"] {
-      padding: 0.5rem;
-    }
-
-    .btn {
-      padding: 0.8rem 2rem;
-      background: rgba(255, 255, 255, 0.9);
-      color: #4a4a4a;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: 'Corbel', sans-serif;
-      font-size: 1rem;
-      transition: all 0.3s;
-    }
-
-    .btn:hover {
-      background: rgba(255, 255, 255, 1);
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .btn-primary {
-      background: rgba(74, 74, 74, 0.1);
-    }
-
     @media (max-width: 768px) {
       .products-grid {
         grid-template-columns: 1fr;
@@ -229,25 +163,6 @@
     </div>
   </div>
 
-  <div class="add-product-section">
-    <h2 style="margin-bottom: 1.5rem; font-weight: 300; color: #4a4a4a;">Ajouter un produit</h2>
-    <form class="add-product-form" id="add-product-form">
-      <div class="form-group">
-        <label>Photo</label>
-        <input type="file" id="product-image" accept="image/*" required>
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="product-description" required></textarea>
-      </div>
-      <div class="form-group">
-        <label>Prix (€)</label>
-        <input type="number" id="product-price" step="0.01" min="0" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Ajouter le produit</button>
-    </form>
-  </div>
-
       <script>
     const categoryName = 'the-ou-cafe';
     const titleElement = document.getElementById('category-title');
@@ -270,39 +185,30 @@
       'image catégories/the cafe/PHOTO-2026-03-25-23-24-45.jpg'
     ];
 
-    const defaultPricesKey = categoryName + '-default-prices';
     const HARDCODED_DEFAULT_PRICES = {
-      'image catégories/the cafe/PHOTO-2026-03-22-09-23-31.jpg': '5.00',
-      'image catégories/the cafe/PHOTO-2026-03-22-17-34-00.jpg': '18.00',
-      'image catégories/the cafe/PHOTO-2026-03-24-21-01-46.jpg': '8.00',
-      'image catégories/the cafe/PHOTO-2026-03-24-21-04-01.jpg': '14.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-22-28-40.jpg': '10.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-23-02-41.jpg': '20.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-23-03-43.jpg': '12.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-23-04-22.jpg': '6.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-23-04-54.jpg': '15.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-23-13-16.jpg': '7.00',
-      'image catégories/the cafe/PHOTO-2026-03-25-23-24-45.jpg': '20.00'
-    };
+  'image catégories/the cafe/PHOTO-2026-03-22-09-23-31.jpg': '5.00',
+  'image catégories/the cafe/PHOTO-2026-03-22-17-34-00.jpg': '18.00',
+  'image catégories/the cafe/PHOTO-2026-03-24-21-01-46.jpg': '8.00',
+  'image catégories/the cafe/PHOTO-2026-03-24-21-04-01.jpg': '14.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-22-28-40.jpg': '10.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-23-02-41.jpg': '20.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-23-03-43.jpg': '12.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-23-04-22.jpg': '6.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-23-04-54.jpg': '15.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-23-13-16.jpg': '7.00',
+  'image catégories/the cafe/PHOTO-2026-03-25-23-24-45.jpg': '20.00'
+};
 
-    let defaultPrices = Object.assign({}, HARDCODED_DEFAULT_PRICES, JSON.parse(localStorage.getItem(defaultPricesKey) || '{}'));
-    let savedProducts = JSON.parse(localStorage.getItem(categoryName + '-products')) || [];
-
-    function saveDefaultPrices() {
-      localStorage.setItem(defaultPricesKey, JSON.stringify(defaultPrices));
-    }
+    const defaultPrices = HARDCODED_DEFAULT_PRICES;
 
     function getDisplayProducts() {
-      const defaultProducts = defaultImagePaths.map((imageUrl, index) => ({
+      return defaultImagePaths.map((imageUrl, index) => ({
         id: `default-${index}`,
-        isDefault: true,
         imageKey: imageUrl,
         description: '',
         price: defaultPrices[imageUrl] || '',
         imageUrl
       }));
-
-      return [...defaultProducts, ...savedProducts];
     }
 
     function toImageSrc(value) {
@@ -335,65 +241,17 @@
           ? `<div class="product-price">${product.price} €</div>`
           : '';
 
-        const defaultEditorHtml = product.isDefault
-          ? `<div style="margin-top: 0.8rem;"><label style="display:block; color:#6b7280; font-size:0.85rem; margin-bottom:0.3rem;">Prix (€)</label><input type="number" step="0.01" min="0" class="default-price-input" data-image-key="${encodeURIComponent(product.imageKey)}" value="${product.price}" style="width:100%; padding:0.55rem; border:1px solid rgba(0,0,0,0.1); border-radius:4px; font-family:inherit;"></div>`
-          : '';
-
         productCard.innerHTML = `
           ${imageHtml}
           <div class="product-info">
             ${descriptionHtml}
             ${priceHtml}
-            ${defaultEditorHtml}
           </div>
         `;
 
         container.appendChild(productCard);
       });
-
-      document.querySelectorAll('.default-price-input').forEach((input) => {
-        input.addEventListener('change', function() {
-          const key = decodeURIComponent(this.getAttribute('data-image-key'));
-          const value = this.value.trim();
-
-          if (!value) {
-            delete defaultPrices[key];
-          } else {
-            defaultPrices[key] = Number(value).toFixed(2);
-          }
-
-          saveDefaultPrices();
-          displayProducts();
-        });
-      });
     }
-
-    document.getElementById('add-product-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const description = document.getElementById('product-description').value;
-      const price = parseFloat(document.getElementById('product-price').value);
-      const imageFile = document.getElementById('product-image').files[0];
-
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const newProduct = {
-            id: Date.now(),
-            description: description,
-            price: price.toFixed(2),
-            imageUrl: e.target.result
-          };
-
-          savedProducts.push(newProduct);
-          localStorage.setItem(categoryName + '-products', JSON.stringify(savedProducts));
-
-          displayProducts();
-          document.getElementById('add-product-form').reset();
-        };
-        reader.readAsDataURL(imageFile);
-      }
-    });
 
     displayProducts();
   </script>
